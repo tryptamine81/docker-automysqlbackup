@@ -331,7 +331,7 @@ if [ ! -e "$BACKUPDIR/monthly" ]	# Check Monthly Directory exists.
 	mkdir -p "$BACKUPDIR/monthly"
 fi
 
-if [ "$LATEST" = "yes" ]
+if [ "$LATEST" = "yes" ] || [ "$LATEST" = "clean" ]
 then
 	if [ ! -e "$BACKUPDIR/latest" ]	# Check Latest Directory exists.
 	then
@@ -387,7 +387,9 @@ else
 fi
 if [ "$LATEST" = "yes" ]; then
 	cp $1$SUFFIX "$BACKUPDIR/latest/"
-fi	
+elif [ "$LATEST" = "clean ]; then
+	cp $1$SUFFIX "$BACKUPDIR/latest/$2$SUFFIX
+fi
 return 0
 }
 
@@ -472,7 +474,7 @@ echo ======================================================================
 			fi
 			echo Monthly Backup of $MDB...
 				dbdump "$MDB" "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
-				compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
+				compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql" "$MDB"
 				BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql$SUFFIX"
 			echo ----------------------------------------------------------------------
 		done
@@ -508,7 +510,7 @@ echo ======================================================================
 		rm -fv "$BACKUPDIR/weekly/$DB/${DB}_week.$REMW".*
 		echo
 			dbdump "$DB" "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
-			compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
+			compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql" "$DB"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	
@@ -519,7 +521,7 @@ echo ======================================================================
 		rm -fv "$BACKUPDIR/daily/$DB"/*."$DOW".sql*
 		echo
 			dbdump "$DB" "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
-			compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
+			compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql" "$DB"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -535,7 +537,7 @@ echo ======================================================================
 	if [ "$DOM" = "01" ]; then
 		echo Monthly full Backup of \( $MDBNAMES \)...
 			dbdump "$MDBNAMES" "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql"
-			compression "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql"
+			compression "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql" "all-databases.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$DATE.$M.all-databases.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -555,7 +557,7 @@ echo ======================================================================
 		rm -fv "$BACKUPDIR/weekly/week.$REMW".*
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/weekly/week.$W.$DATE.sql"
-			compression "$BACKUPDIR/weekly/week.$W.$DATE.sql"
+			compression "$BACKUPDIR/weekly/week.$W.$DATE.sql" "all-databases.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 		
@@ -567,7 +569,7 @@ echo ======================================================================
 		rm -fv "$BACKUPDIR"/daily/*."$DOW.sql".*
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/daily/$DATE.$DOW.sql"
-			compression "$BACKUPDIR/daily/$DATE.$DOW.sql"
+			compression "$BACKUPDIR/daily/$DATE.$DOW.sql" "all-databases.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
