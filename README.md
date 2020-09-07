@@ -140,7 +140,10 @@ Compress communications between backup server and MySQL server?
 Default value: `no`
 
 ### LATEST
-Additionally keep a copy of the most recent backup in a seperate directory.
+Additionally keep a copy of the most recent backup in a seperate directory ("yes", "no" or "clean")
+ - "no" - No additional copy
+ - "yes" - will copy latest backup into the latest folder
+ - "clean" - will copy latest backup and rename as the database name or "all-databases" 
 
 Default value: `no`
 
