@@ -387,7 +387,7 @@ else
 fi
 if [ "$LATEST" = "yes" ]; then
 	cp $1$SUFFIX "$BACKUPDIR/latest/"
-elif [ "$LATEST" = "clean ]; then
+elif [ "$LATEST" = "clean" ]; then
 	cp $1$SUFFIX "$BACKUPDIR/latest/$2$SUFFIX"
 fi
 return 0
